@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPR Legislative Framework — Q&A</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:wght@300;400;600&display=swap');
+
+:root {
+  --gold: #c9a84c;
+  --gold-dark: #8b6914;
+  --gold-glow: rgba(201,168,76,0.15);
+  --bg: #0d0e14;
+  --surface: #13141c;
+  --surface2: #1a1b26;
+  --border: #22233a;
+  --text: #e2ddd6;
+  --muted: #9490a8;
+  --faint: #3a3a55;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  height: 100dvh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Source Serif 4', Georgia, serif;
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ── HEADER ── */
+header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+.logo {
+  width: 38px; height: 38px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 2px 14px rgba(201,168,76,0.3);
+}
+.header-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 700;
+  color: var(--gold); line-height: 1.2;
+}
+.header-text p { font-size: 11px; color: var(--faint); margin-top: 1px; }
+.badge {
+  margin-left: auto; flex-shrink: 0;
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.25);
+  color: var(--gold);
+  font-size: 10px; padding: 3px 9px;
+  border-radius: 20px; letter-spacing: 0.04em;
+}
+
+/* ── MESSAGES ── */
+#msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  scroll-behavior: smooth;
+}
+
+/* ── WELCOME SCREEN ── */
+#welcome {
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 18px 4px 4px;
+  animation: rise 0.5s ease both;
+}
+@keyframes rise { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+#welcome .icon { font-size: 40px; margin-bottom: 12px; }
+#welcome h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px; font-weight: 700;
+  color: var(--gold); text-align: center;
+  margin-bottom: 8px;
+}
+#welcome p {
+  color: var(--muted); font-size: 12.5px;
+  text-align: center; line-height: 1.7;
+  max-width: 320px; margin-bottom: 16px;
+}
+.pills {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  justify-content: center; margin-bottom: 20px;
+}
+.pill {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 10.5px; color: var(--muted);
+}
+.sugs-label {
+  font-size: 10px; color: var(--faint);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 9px; align-self: flex-start; width: 100%;
+  text-align: center;
+}
+.sugs {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 7px; width: 100%;
+}
+.sug {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 9px 11px;
+  color: var(--muted); font-size: 12px;
+  text-align: left; cursor: pointer;
+  transition: all 0.15s; line-height: 1.4;
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+.sug:hover { border-color: rgba(201,168,76,0.35); color: var(--gold); background: var(--gold-glow); }
+
+/* ── BUBBLES ── */
+.row { display: flex; gap: 8px; align-items: flex-start; animation: rise 0.25s ease both; }
+.row.user { flex-direction: row-reverse; }
+
+.av {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; margin-top: 2px;
+}
+.av.user { background: #1c1c38; }
+.av.bot  { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); }
+
+.bub {
+  max-width: 82%; border-radius: 4px 14px 14px 14px;
+  padding: 11px 14px; font-size: 13px; line-height: 1.8;
+  word-break: break-word;
+}
+.bub.user {
+  background: #191930; border: 1px solid #25254a;
+  border-radius: 14px 4px 14px 14px; color: #c5bedd;
+}
+.bub.bot {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text);
+}
+.bub.bot b { color: var(--gold); }
+.bub.bot ul { margin: 5px 0 5px 16px; }
+.bub.bot li { margin-bottom: 2px; }
+.src {
+  display: inline-block;
+  background: var(--gold-glow); border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 4px; padding: 2px 7px;
+  font-size: 10.5px; color: var(--gold);
+  margin-bottom: 8px;
+}
+.error-bub { color: #e06060 !important; border-color: rgba(220,80,80,0.2) !important; }
+
+/* ── TYPING ── */
+#typing { display: none; gap: 8px; align-items: center; }
+#typing.show { display: flex; }
+.typing-inner {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px 14px 14px 14px;
+  padding: 12px 16px; display: flex; gap: 5px; align-items: center;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--gold);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.dot:nth-child(2){animation-delay:.2s} .dot:nth-child(3){animation-delay:.4s}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+
+/* ── INPUT ── */
+footer {
+  flex-shrink: 0;
+  padding: 11px 16px 14px;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+.input-wrap {
+  display: flex; gap: 9px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 13px; padding: 9px 11px;
+  transition: border-color 0.2s;
+}
+.input-wrap:focus-within { border-color: rgba(201,168,76,0.4); }
+textarea {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--text); font-size: 13px; resize: none;
+  font-family: 'Source Serif 4', Georgia, serif;
+  line-height: 1.5; max-height: 110px; overflow-y: auto;
+  align-self: flex-end;
+}
+textarea::placeholder { color: var(--faint); }
+#send {
+  width: 34px; height: 34px; flex-shrink: 0; align-self: flex-end;
+  background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+  border: none; border-radius: 8px; cursor: pointer;
+  font-size: 15px; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.15s;
+  box-shadow: 0 2px 8px rgba(201,168,76,0.25);
+}
+#send:disabled { opacity: 0.3; cursor: default; }
+.hint { font-size: 10.5px; color: var(--faint); text-align: center; margin-top: 7px; }
+
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:480px){ .sugs{grid-template-columns:1fr} .bub{max-width:90%} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⚖</div>
+  <div class="header-text">
+    <h1>OPR Legislative Framework</h1>
+    <p>Trinidad &amp; Tobago · Public Procurement</p>
+  </div>
+  <div class="badge">20 DOCS + GUIDELINES</div>
+</header>
+
+<div id="msgs">
+  <div id="welcome">
+    <div class="icon">📜</div>
+    <h2>Ask anything about T&T procurement law</h2>
+    <p>All 20 OPR legislative documents plus Handbooks &amp; Guidelines are loaded — Acts, Regulations, Legal Notices and OPR Guidance. Ask in plain English.</p>
+    <div class="pills">
+      <span class="pill">Act 2015</span>
+      <span class="pill">Amendments 2016–2023</span>
+      <span class="pill">10 Regulations</span>
+      <span class="pill">3 Legal Notices</span>
+      <span class="pill">Simplified Procurement 2024</span>
+      <span class="pill">Basic Procurement Handbook</span>
+      <span class="pill">Simplified Procurement Guidelines</span>
+      <span class="pill">Standstill Period Guidelines</span>
+    </div>
+    <div class="sugs-label">Suggested questions</div>
+    <div class="sugs">
+      <button class="sug" onclick="prefill(this)">What are the thresholds for micro vs small-scale procurement?</button>
+      <button class="sug" onclick="prefill(this)">What are the penalties for bid rigging?</button>
+      <button class="sug" onclick="prefill(this)">How does the challenge proceedings process work?</button>
+      <button class="sug" onclick="prefill(this)">What is the composition of the OPR Board?</button>
+      <button class="sug" onclick="prefill(this)">Which services are exempt from the Act?</button>
+      <button class="sug" onclick="prefill(this)">What is the standstill period and when does it apply?</button>
+      <button class="sug" onclick="prefill(this)">How does the ineligibility list work?</button>
+      <button class="sug" onclick="prefill(this)">What procurement methods are available?</button>
+      <button class="sug" onclick="prefill(this)">What are the objects of the Act?</button>
+      <button class="sug" onclick="prefill(this)">What are the four stages of the procurement cycle?</button>
+      <button class="sug" onclick="prefill(this)">When should a probity advisor be used?</button>
+      <button class="sug" onclick="prefill(this)">What must the Notice of Decision to Award contain?</button>
+      <button class="sug" onclick="prefill(this)">What is the Kraljic Matrix and how is it used?</button>
+    </div>
+  </div>
+  <div id="typing">
+    <div class="av bot">⚖</div>
+    <div class="typing-inner">
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="input-wrap">
+    <textarea id="txt" placeholder="Ask about the procurement framework…" rows="1"></textarea>
+    <button id="send" onclick="send()" disabled>↑</button>
+  </div>
+  <div class="hint">Enter to send · Shift+Enter for new line</div>
+</footer>
+
+<script>
+// ── FULL KNOWLEDGE BASE (system prompt) ──────────────────────────────────────
+const SYSTEM = `You are an expert legal and procurement advisor specialising in Trinidad and Tobago's public procurement legislative framework. You have full, detailed knowledge of all 20 documents published at oprtt.org/legislative-framework/.
+
+KNOWLEDGE BASE — ALL 20 DOCUMENTS:
+
+## ACTS
+
+### Public Procurement and Disposal of Public Property Act, 2015 (Act No. 1 of 2015)
+Assented 14 January 2015. Initial sections commenced 31 July 2015 (LN 150/2015). Remaining sections commenced 26 April 2023 (LN 106/2023).
+
+OBJECTS (s.5): (1) accountability, integrity, transparency and value for money; (2) efficiency, fairness, equity and public confidence; (3) local industry development, sustainable procurement and sustainable development. "Value for money" = optimal balance of outcomes and input costs on basis of total cost of supply, maintenance and sustainable use.
+
+KEY DEFINITIONS (s.4): "bid rigging" = collusion to manipulate proceedings, incl. collusive price-fixing and anti-competitive behaviour to unfairly influence outcome of competitive tender (amended 2020); "disposal of public property" = transfer without value, sale, lease, concession or alienation of property owned by a public body; "procurement" = acquisition of goods, works or services involving use of public money; "public body" = Office of the President, Parliament, Judiciary, Ministries, Tobago House of Assembly, Municipal Corporations, Regional Health Authorities, statutory bodies, State-controlled enterprises, Service Commissions, entities using public money; "public money" = money received/receivable by, spent by, distributed by, or appropriated by Parliament for a public body; "standstill period" = period from dispatch of notice under s.35(2) during which procuring entity cannot accept the successful submission; "sustainable procurement" = process meeting needs in a way achieving value for money long-term generating benefits while minimising environmental damage; "local content" = local value added to goods/works/services measured as amount remaining in T&T after production.
+
+OPR ESTABLISHMENT (ss.9-14): Body corporate. Board of 8-11 members appointed by President after consultation with PM and Leader of Opposition. Composition: Procurement Regulator (Chairman, min 10 yrs experience, degree in finance/economics/law/accounting); accounting/finance expert; business management expert; civil engineering expert; attorney min 10 yrs; procurement-related field member; up to 4 community/civil society representatives. Terms (as amended 2017): Regulator 5 yrs (max 2 consecutive terms); expert members 4 or 3 yrs; community members 3 yrs. Quorum = 6 including Regulator or Deputy. Meets at least once/month. NOT subject to direction or control of any other person or authority but accountable to Parliament. Exempt from stamp duties, corporation tax, customs duty, VAT, motor vehicle taxes (s.23). Annual report to Speaker, President of Senate, Minister; referred to Public Accounts Committee (s.24, amended 2016). Financial year ends 30 September. Penalty for non-compliance with OPR direction: $100,000 (s.14).
+
+OPR FUNCTIONS (s.13): Establish procurement database; set training standards/certification; issue guidelines; prepare model handbooks; promote technology; conduct audits; investigate breaches; maintain Procurement Depository; create standard form contracts; maintain ineligibility list; maintain pre-qualified mediators/arbitrators list.
+
+REMOVAL OF BOARD MEMBER (s.12): bankruptcy; incapacity; neglect/disrepute; absent 3 consecutive meetings without leave; convicted of dishonesty; convicted under Integrity in Public Life Act; convicted of offence punishable by 1+ yr; trading with Government without Ministerial approval (added 2016).
+
+GENERAL PROVISIONS (Part III): Procurement Depository (s.26) = publicly accessible database; supplier responsible for accuracy; annual notice in newspaper and website. Planned procurement (s.27) = publish plans within 6 weeks of National Budget approval; not a solicitation; does not apply to national security. Local industry preference (s.28) = may limit participation. Due diligence (s.29) = legal capacity; not bankrupt; not convicted within past 10 yrs of corruption/fraud (amended 2020); taxes paid; professionally/technically qualified; meets industry standards. No splitting (s.31). Cancellation (s.33) = any time prior to acceptance; unopened tenders returned. Abnormally low submissions (s.34) = may reject after requesting clarification. Standstill period (s.35) = notify all suppliers; notice must include name/address of successful supplier, contract price, duration; NOT required for urgent public interest or national security; contract enters force on dispatch of acceptance notice. Public notice of contract award (s.36) = published on procuring entity's website. Quarterly contract reports (s.37) = to OPR within 3 weeks after end of each quarter. Confidentiality (s.39). Whistleblower protection (s.40) = no dismissal/suspension/demotion for good faith reporting to DPP, police, Integrity Commission, OPR.
+
+INVESTIGATION (Part IV, ss.41-48): OPR may investigate on own initiative or complaint; person with reasonable belief of bid rigging SHALL report in writing; false report = $500,000 + 1 yr; authorised officers may examine affairs, copy/remove documents, enter premises (with High Court order); after investigation inform parties and Minister; report to DPP if offence grounds; no concealing/destroying documents ($5M + 10 yrs); no adverse report without opportunity to be heard.
+
+CHALLENGE PROCEEDINGS (Part V, ss.49-51M): Right to challenge non-compliant decisions that cause loss/injury. Deadlines: for solicitation/pre-qualification terms = before submission deadline; for other decisions = within standstill period or 7 working days of publication. OPR may suspend within 3 days; procuring entity reply within 3 working days (signed by Accounting Officer); OPR decides within 30 working days (amended from 20 by 2020 Act); suspension lifted immediately upon decision. OPR powers: prohibit/require action; confirm/overturn award; award costs/compensation; dismiss. Standard of proof: civil (balance of probabilities). Hearings open to public except s.52 cases. Public Procurement Review Board (added 2016): retired judge + registered engineer (10+ yrs) + CA/QS (10+ yrs); appointed for 3 yrs; request within 21 days of OPR decision; must complete within 28 days; appeal to High Court within 28 days.
+
+DISPOSAL OF STORES (Part VI, ss.53-57): Each public body must establish disposal committee of min 3 officers; all disposal matters referred to committee; Accounting Officer must respond to recommendations within 14 days; cannot dispose to employee/board member except per Regulations.
+
+INELIGIBILITY LIST (s.58): OPR maintains public list. Grounds: consistently failing satisfactory performance; corrupt/fraudulent practices; conviction under Act; corrupt/fraudulent practices found during proceedings = automatic 10 yrs. Must give opportunity to be heard. Once listed: removed from Procurement Depository; all public bodies notified.
+
+CONDUCT (s.59): No gifts or approaches to members/consultants to gain advantage; no acceptance of gratuity/employment offer; no procuring from own staff; no conditions favouring particular supplier. Penalty: $1M + 5 yrs.
+
+OFFENCES (s.60): Bid rigging/collusion = $5M + 10 yrs; altering procurement document = $2M + 7 yrs; splitting = $500,000 + 1 yr; concealing/destroying documents = $5M + 10 yrs; non-disclosure breach = $500,000 + 1 yr; false report = $500,000 + 1 yr. No prosecution without DPP written consent.
+
+EXEMPTIONS (s.7, amended 2020 & 2023): legal services; debt financing for national budget; accounting/auditing services; medical emergency/scheduled medical services; financing services (LN 270/2023) = Ministry of Finance financing for central govt or govt-guaranteed public body financing; other services by Ministerial Order with OPR agreement (negative resolution). National security procurement exempt from planned procurement publication. Small procurement (s.58A, added 2023) = up to $1M exempt from Act, governed by Simplified Procurement Regulations 2024.
+
+IMMUNITY (s.62): No personal liability unless reckless or bad faith.
+
+### Amendment Act 2016 (Act No. 5 of 2016) — Assented 17 June 2016
+Added removal ground: trading with Government without Ministerial approval. Annual report referred to PAC. Suspension lifted immediately upon OPR decision. Established Public Procurement Review Board (ss.51A-51M). Added Part VIA: Disposal of State Lands — Minister may make Regulations (negative resolution) for disposal of State Lands, Government real property, State-controlled enterprise property, statutory body property.
+
+### Amendment Act 2017 (Act No. 3 of 2017) — Assented 13 March 2017
+Reduced Regulator's term from 7 to 5 years. Reduced expert member terms: 6→4 yrs and 5→3 yrs. Reduced community member terms: 4→3 yrs.
+
+### Amendment Act 2020 (Act No. 27 of 2020) — Assented 29 December 2020
+Revised bid-rigging definition to include collusive price-fixing and anti-competitive behaviour. Added exemptions: legal services, debt financing, accounting/auditing, medical services. Changed conviction requirement to past 10 years, locally or internationally. Extended OPR review from 20 to 30 working days. Expanded "relative" definition to include cohabitant, parents, siblings, children. Deleted s.13(1)(o) (OPR no longer acts for State to dispose of real Government property).
+
+### Amendment Act 2023 (Act No. 13 of 2023) — Assented 26 July 2023
+Inserted s.58A: procurement up to $1M exempt from Act; subject to Simplified Procurement Regulations. Changed Regulations from affirmative to negative resolution of Parliament. Additional services exemption now requires OPR agreement. Validated Legal Notices No. 206 and 164 of 2023.
+
+---
+
+## REGULATIONS (all made 13 December 2021, published 24 February 2022)
+
+### Miscellaneous Regulations 2021 (LN 28/2022)
+Committee members invited via newspaper/website; min 3 members (odd number); must have appropriate qualifications. Obligations: act effectively/fairly/impartially; no personal gain; no gifts; maintain confidentiality; disclose conflicts. Remuneration determined by Board. Fee for printed info = actual cost of printing and dispatching. Penalty: $1M + 5 yrs.
+
+### Challenge Proceedings Regulations 2021 (LN 25/2022)
+Application for review in writing within s.50(2) time limits. OPR decision binding on applicant and procuring entity. Dismissal grounds: manifestly without merit; outside time limits; no pecuniary/economic interest. Procuring entity reply within 3 working days; signed by Accounting Officer; include documentary evidence. Failure to reply does not prevent review. Represented by attorney, engineer, QS, valuator or other recognised person. Hearings open to public except s.52 cases; record available within 10 days. Civil standard of proof. OPR not bound by rules of evidence. May decide without hearing if documentary evidence sufficient. Decision confined to issues raised. Written reasons within 30 working days.
+
+### Ineligibility Proceedings Regulations 2021 (LN 27/2022)
+Report submitted to Accounting Officer or OPR with documentary evidence. OPR reviews within 10 working days; issues Notice of Proposed Ineligibility (NPI). Respondent has 10 working days to contest; OPR may extend for good cause. If no contest: sanction issued without hearing. If contested: closed hearing; record available within 14 working days. Factors considered: severity; degree of involvement; magnitude of losses; damage to procurement credibility; past conduct; cooperation; corrective measures. Sanctions: (a) Letter of Reprimand — first/minor offence; (b) Conditional non-debarment — max 6 months; (c) Ineligibility — 1-10 years. Can extend to senior officers if named in NPI. Obligated procuring entities must exclude ineligible suppliers from all procurement; may continue existing contracts unless Accounting Officer directs otherwise. Exemption available for overriding public interest. Review available for: new evidence; conviction reversed; bona fide change in ownership/management; compliance with conditions. Reinstatement notification within 7 days.
+
+### Participation in Procurement Regulations 2021 (LN 29/2022)
+Domestic preference for goods: exclusively manufactured in T&T, or partially manufactured/assembled in T&T with min 35% domestic value added of ex-works price. Domestic value added = domestic labour + T&T raw materials/components + manufacturing/assembly in T&T. Domestic preference for works: min 65% domestic labour (skilled or unskilled, may include management). Nationality NOT a condition for eligibility. Evidence required: certificate of origin, commercial invoice, signed declarations. Domestic preference margin: 10% (reviewable quarterly). Bidding document must state eligibility requirements, required evidence, percentage margin, and application method. Joint ventures/consortia: jointly and severally liable; cannot participate individually or with another JV in same proceedings; must nominate representative; commit resources in writing.
+
+### Pre-Qualification and Pre-Selection Regulations 2021 (LN 30/2022)
+Suppliers/contractors register in Procurement Depository on ongoing basis. Pre-qualification criteria (s.29): legal capacity; not bankrupt; not convicted past 10 yrs corruption/fraud; taxes paid; professionally/technically qualified; meets industry standards. Tax compliance exception: deemed compliant if not informed in time, or has binding payment agreement. Public invitation required if no/insufficient pre-qualified suppliers in Depository: published in at least one daily newspaper, procuring entity's website, OPR's website; also internationally where applicable; min 30 working days. All applicants notified; written reasons for rejection. Pre-selection used where list prohibitively long; scored on: relevant experience; key staff qualifications; managerial capability; knowledge transfer; T&T national participation; environmental/sustainability conditions; local industry development; other requirements.
+
+### Procurement Methods and Procedures Regulations 2021 (LN 31/2022)
+METHODS: (1) Open Bidding (default) — advertised nationally (min 20 working days) or internationally (min 40 working days); may include two-stage bidding for complex/large procurements; Stage 1 = proposal without price, Stage 2 = final tender with price. (2) Limited Bidding — restricted to limited suppliers due to complexity/specialisation or disproportionate evaluation cost; same procedures as open bidding but no advertisement; min 20 (national) or 30 (international) working days. (3) Request for Quotations — readily available low-priced goods/services; written request to min 3 suppliers; min 5 working days response; one quotation per supplier. (4) Single Source Selection — non-competitive; one supplier even though others available; used for: continuation of previous contract (within 12 months, satisfactory performance); spare/replacement parts; similar goods more cost-effective; supplier has relevant data; goods usually provided by public body; emergency; requires Procurement Officer then Accounting Officer approval. (5) Sole Source Selection — only one capable supplier exists; used for: failed bidding; exclusive rights/technical reasons; extreme unforeseen urgency; additional goods (max 30% of original, contract awarded within 18 months); additional services (max 50% of original); repetition of similar services; prototype; commodity market. (6) Framework Agreements — repetitive/urgent needs; two stages: invitation then call-off contracts. (7) Electronic Reverse Auction — goods only; online real-time bidding; must use open bidding up to final stage.
+
+PDAC (Procurement and Disposal Advisory Committee): must be established by each procuring entity; comprises Corporate Secretary/Head of Legal + Head of Finance + Subject Matter Expert + others; Secretary = Senior Officer (not a member); reviews recommendations for award; assesses adherence to Act/Regulations/Handbooks; must disclose and recuse for conflicts of interest. Does NOT apply to Simplified Procurement.
+
+BIDDING DOCUMENTS must include: nature/timeframe; qualifications required; submission instructions/deadline; price components/currency/taxes; evaluation criteria/methodology; participation limitations; grouping into lots; bid validity; security requirements; contract terms.
+
+TECHNICAL SPECIFICATIONS: objective; not favouring particular supplier/brand; include performance/output requirements; reference T&T Bureau of Standards first, then international standards; cannot require specific trademark unless no other way to describe.
+
+TENDER SECURITY: optional; max 2% of estimated contract value; valid 28 working days beyond bid validity; forfeited for: modification/withdrawal after deadline; refusal to correct arithmetical error; failure to sign contract; failure to provide performance security. Released to unsuccessful suppliers upon expiry or execution with successful supplier.
+
+TENDER VALIDITY: procuring entity may request extension in writing before expiry; supplier may refuse without forfeiting tender security; price cannot change during extension.
+
+PERFORMANCE SECURITY: 5%-10% of contract value; from reputable financial institution; released on completion or termination not due to contractor fault.
+
+ADVANCE PAYMENT GUARANTEE: mobilization fee = 10% of contract value; advance beyond 10% requires guarantee from reputable financial institution; released upon certification of satisfactory performance.
+
+OPENING OF SUBMISSIONS: if public opening = at specified time/place; in presence of suppliers; record prepared, dated, signed; contains: identification, date/time, supplier names, prices, securities.
+
+CLARIFICATION: written clarification may be sought (no change of price); arithmetical errors may be corrected with supplier agreement; if supplier refuses correction = rejected, security forfeited; if supplier amends = rejected, security forfeited.
+
+### Procurement of Consultants Regulations 2021 (LN 32/2022)
+SELECTION METHODS: (1) QCBS = combined quality + cost; cost weight 20-30 out of 100; (2) QBS = complex/specialized; only top-ranked technical proposal's financial proposal opened and negotiated; (3) FBS = simple defined assignment with fixed budget; proposals exceeding budget rejected; highest-ranked within budget wins; (4) LCS = standard/routine small value; lowest cost among technically qualified; (5) CQS = small assignments requiring specialized expertise, critical timing, few qualified consultants; at least 3 consultants; (6) Individual Consultants = qualifications paramount; teams not required; at least 3 shortlisted. Request for Proposal includes: letter of invitation; instructions to consultant (evaluation criteria/weights/minimum passing score); terms of reference; draft contract. CONFLICT OF INTEREST: consultant must provide objective/impartial advice; firm providing consulting for preparation/implementation disqualified from goods/works/services resulting from that consulting work; no award if conflict exists.
+
+### Record of Procurement Proceedings Regulations 2021 (LN 33/2022)
+Each procuring entity must maintain accessible, retrievable record per procurement. Contents: approval documents; complete bidding document; description; list of participants/qualifications; reason for limiting participation; clarifications; reason for procurement method; tender prices; evaluation summary; reason for rejection of abnormally low bid; decision on standstill; signed contract; OPR decisions. Retention: min 7 years after completion/termination/cancellation (longer for investigations/litigation). May be electronic; must safeguard integrity/reliability/accuracy. Available upon request after submission accepted. Summary report submitted to OPR per guidelines.
+
+### Retention and Disposal of Personal Property Regulations 2021 (LN 34/2022)
+Personal property = physical property incl. stores, equipment, computers, motor vehicles. Risk-based approach. Written policy required. Annual physical stock count. Disposal methods: public sale/tendering; public auction; gift; lease; concession; transfer; destruction; trade-in; recycling; donation. If net book/market/residual value exceeds $100,000: publish in at least 2 daily newspapers and website. OPR notified of all disposals within 6 weeks of completion. Disposal to employees: prior approval from Accounting Officer via PDAC; if value >$100,000: notify OPR within 10 working days. Must ensure: safe/environmental disposal (EMA Standards); net proceeds accounted for; purchaser provides source of funds declaration and bio-data.
+
+### Evaluation Regulations 2021 (LN 26/2022)
+Criteria and methodology specified in bidding document before solicitation. PRICE FACTORS (quantifiable): period for completion; life-cycle operating costs; after-sale service/technical assistance; spare parts; payment terms; optional items; extended warranty. LIFE-CYCLE COSTING: NPV basis; used where operation/maintenance costs considerable vs initial cost; bidding document must specify: number of years; discount rate; methodology. NON-PRICE FACTORS: scored/weighted; includes: quality of methodology/work plan; performance/capacity/functionality; sustainability features; must be prioritised and assigned merit points. STANDSTILL PERIOD: min 10 working days, max 15 working days; transmitted by commercial courier, registered mail, or electronic means (with confirmation). SUBSTANTIALLY RESPONSIVE: only responsive submissions evaluated; non-responsive = material deviation affecting scope/quality/performance; inconsistency with bidding document; unfair competitive position.
+
+### Simplified Procurement Regulations 2024 (LN 65/2024)
+SCOPE: Procurement up to $1,000,000 (exempt from main Act under s.58A). DEFINITIONS: Micro procurement = up to $75,000 (incl. taxes/duties/charges); Small-scale procurement = $75,001-$1,000,000 (incl. taxes); Direct contracting = non-competitive for micro procurement where cost of other methods outweighs benefit and price is fair/reasonable. DISAPPLICATIONS (reg.13): PDAC review does NOT apply; standstill period does NOT apply; s.36 public notice of award does NOT apply; challenge proceedings (Part V) do NOT apply. KEY RULES: no splitting to stay within thresholds (penalty $500,000 + 1 yr); cannot split to bring within micro definition; small-scale procurement must be in annual schedule of planned procurement; micro procurement NOT required in annual schedule (but in annual plan); Procurement Officer responsible, Accounting Officer approves (may delegate). MINIMUM SUBMISSION TIMES (non-emergency): open bidding min 10 working days; limited bidding min 7 days; request for quotations min 2 working days; single source min 5 working days; sole source min 5 working days. EXEMPTIONS FROM REGISTRATION: public utility payments; goods/services only available online; goods/works/services for State business outside T&T; air travel/hotels for conferences/seminars; emergencies — may use direct contracting for these. MICRO PROCUREMENT: procuring entity establishes and maintains registry (manual or electronic); verbal quotations permitted (written record required); quarterly report to OPR within 3 weeks after quarter end. SMALL-SCALE PROCUREMENT: must solicit from Procurement Depository first; one-envelope system for straightforward procurements; two-envelope system for complex procurements. COMPLAINTS: in writing to OPR; procuring entity must maintain complaints register. TAX COMPLIANCE: must verify supplier has paid taxes; first-time participants have 6 months to submit evidence.
+
+---
+
+## LEGAL NOTICES
+
+### Legal Notice No. 150 of 2015
+Fixed 31 July 2015 as commencement date for initial sections: ss.1-5(1), 8-23, 25, 62-63 (OPR establishment, administration, funding, regulation-making power sections).
+
+### Legal Notice No. 106 of 2023 (Partial Proclamation)
+Fixed 26 April 2023 as commencement date for remaining operative sections: ss.5(2), 6, 7, 13(1)(e)-(s), 14(1)(2), 24, 26-70, Schedules 1 and 2 (all procurement proceedings, challenge proceedings, disposal, enforcement, transitional provisions).
+
+### Legal Notice No. 270 of 2023 (Financing Services Exemption Order)
+Act does NOT apply to procurement of financing services by Ministry of Finance for: (a) central government; (b) public bodies where financing guaranteed by Government. Made under s.7(6)(e); with OPR agreement; subject to negative resolution of Parliament.
+
+---
+
+## KEY THRESHOLDS & NUMBERS (quick reference)
+- Micro procurement: up to $75,000
+- Small-scale procurement: $75,001 – $1,000,000
+- Full Act: above $1,000,000
+- Tender security: max 2% of estimated contract value
+- Tender security validity: 28 working days beyond bid validity
+- Performance security: 5%–10% of contract value
+- Mobilization fee: 10% of contract value
+- Domestic value-added threshold: min 35% of ex-works price
+- Domestic labour threshold: min 65%
+- Domestic preference margin: 10%
+- Disposal publication threshold: >$100,000
+- OPR disposal notification: within 6 weeks
+- Disposal to employees OPR notification: within 10 working days (if >$100,000)
+- Standstill: min 10, max 15 working days
+- Records retention: min 7 years
+- Quarterly contract reports: within 3 weeks after quarter end
+- Challenge proceedings OPR decision: within 30 working days
+- Review Board: within 28 days; appeal to High Court within 28 days
+- Request for Review Board: within 21 days of OPR decision
+- Pre-qualification submission period: min 30 working days
+- Open bidding national: min 20 working days
+- Open bidding international: min 40 working days
+- Limited bidding national: min 20 working days
+- Limited bidding international: min 30 working days
+- Request for quotations: min 5 working days (main Regs); 2 working days (Simplified)
+- Challenge application: within standstill OR within 7 working days of decision publication
+- Procuring entity reply to challenge: within 3 working days
+- NPI response period: 10 working days
+- Ineligibility: 1–10 years
+- Conditional non-debarment: max 6 months
+- Planned procurement publication: within 6 weeks of National Budget approval
+- Regulator term: 5 years, max 2 consecutive
+- Board quorum: 6 members incl. Regulator or Deputy
+- Disposal committee Accounting Officer response: within 14 days
+- Sole source additional goods: within 18 months, max 30% of original value
+- Sole source additional services: max 50% of original value
+- QCBS cost weight: 20–30 out of 100
+- OPR financial year ends: 30 September
+
+## COMMENCEMENT TIMELINE
+- 14 Jan 2015: Royal Assent, Act No. 1 of 2015
+- 31 Jul 2015: OPR establishment sections commence (LN 150/2015)
+- 17 Jun 2016: Royal Assent, Amendment Act 2016 (Act No. 5 of 2016)
+- 13 Mar 2017: Royal Assent, Amendment Act 2017 (Act No. 3 of 2017)
+- 29 Dec 2020: Royal Assent, Amendment Act 2020 (Act No. 27 of 2020)
+- 24 Feb 2022: 10 Regulations published (LN 25–34 of 2022)
+- 26 Apr 2023: Full commencement of remaining Act sections (LN 106/2023)
+- 26 Jul 2023: Royal Assent, Amendment Act 2023 (Act No. 13 of 2023)
+- 8 Sep 2023: Financing Services Exemption Order (LN 270/2023)
+- Apr 2024: Simplified Procurement Regulations 2024 (LN 65/2024)
+
+---
+
+## HANDBOOKS AND GUIDELINES (oprtt.org/handbooks-and-guidelines/)
+
+The OPR has published a suite of General Guidelines, Handbooks, Standard Bidding Documents and Model Contracts under ss.13(1)(c) and (d) of the Act. Public bodies SHALL comply with these guidelines (ss.30(1)(a) and 54(1)(a)). In the event of discrepancy between Guidelines and the Act/Regulations, the Act and Regulations prevail.
+
+### Basic Procurement Handbook (HGGE02 — Version 2.0, August 2023)
+Provides public bodies with a practical end-to-end guide for procuring goods, works and services. Covers four phases: Planning; Solicitation; Evaluation and Award; Contract Management to Close Out.
+
+KEY CONTENT:
+- Public bodies may fall into 3 categories: (1) previously under CTB Act (ministries/departments); (2) previously under State Enterprises Monitoring Manual (SOEs); (3) NGOs/entities using public money
+- Delegation of Authority: each public body shall establish financial delegations to reduce bottlenecks; award of contract must only commence after funding confirmed
+- Confirmation of Funding: if urgent, suppliers/contractors must be informed solicitation is "in anticipation" of requirement; award only when funding authorised
+- Procurement Depository: procuring entities shall identify providers from OPR's pre-qualified database; if no pre-qualified suppliers exist, publish invitation or conduct market research
+- Records: maintained per individual procurement cycle; stored minimum 7 years; hard copy file + electronic format where possible
+
+PROCUREMENT PLANNING TOOLS:
+1. Pareto Analysis (80/20 rule): sort portfolio by price descending; identify items representing 80% of expenditure; invest most administrative effort in top items
+2. Porter's Five Competitive Forces: assess rivalry in industry; substitutes; new entrants; supplier power; buyer power — helps understand supply market
+3. Supplier Preferencing Model: determines how procuring entity's business is viewed by suppliers — categories: Nuisance Account; Development Account; Exploitable Account; Core Account
+4. Procurement Portfolio Analysis (Kraljic Matrix): plots items by relative value (high/low) vs supply risk (high/low): Routine (low risk/low value) = outsource & automate; Leverage (low risk/high value) = exploit purchasing power; Bottleneck (high risk/low value) = ensure supply; Strategic (high risk/high value) = form partnership
+5. Supply Positioning Matrix: determines strategies based on supply risk and impact on organisation
+
+FOUR STAGES OF PROCUREMENT:
+1. Planning: annual planning after budget; market research; procurement portfolio analysis; risk mitigation; individual procurement planning
+2. Solicitation: RFQ/RFP/ITB; site visit; clarification; receipt of bids
+3. Evaluation and Award: evaluate submissions; prepare evaluation report; PDAC review; approval; standstill period (if applicable); contract award
+4. Contract Management: performance of contract; vendor relationship management; reporting on contractor performance; contract close-out
+
+OPERATIONAL PROCUREMENT CYCLE (from Basic Handbook):
+Define procurement need → Reconcile needs with funds → Develop purchase requisition → Assign purchase requisition → Prepare solicitation documents (RFQ/RFP/ITB) → Solicitation → Evaluate & prepare evaluation report → Review by PDAC → Obtain approval for contract award → Institute standstill period (if applicable) → Issue Notice of Acceptance → Finalise and execute contract → Commencement of contract → Receive goods/monitor works and services → Make payment → Report on performance of provider
+
+### General Guidelines: Simplified Procurement (HGGE10 — Version 1.0, October 2024)
+Developed to assist public bodies in undertaking simplified procurement (micro and small-scale) under the Simplified Procurement Regulations 2024. OPR oversight functions under s.13(1) still apply to all simplified procurements.
+
+KEY CONTENT:
+OBJECTS AT EACH STAGE — public body must consider how to promote:
+- Transparency: ensure all processes clear and open to all stakeholders
+- Efficiency: streamline procedures to reduce time and resources
+- Accountability: maintain clear documentation, obtain approvals, prepare clear reports
+- Integrity: conduct procurement honestly and ethically
+- Value for Money: obtain quality goods/works/services at best cost
+- Fairness: treat all suppliers equally; make unbiased decisions
+- Equity: ensure fair treatment; equal opportunities for participation
+- Public Confidence: maintain trust through transparency and ethical conduct
+- Local Industry Development: promote growth of local businesses through procurement
+- Sustainable Procurement: consider environmental, social, economic factors
+- Sustainable Development: balance current and future generations' needs
+
+PROCUREMENT REQUIREMENTS NOT APPLICABLE UNDER SIMPLIFIED PROCUREMENT:
+1. Registration in procuring entity's Registry or Procurement Depository for: public utility payments; goods/services only available via online platform; goods/works/services for conduct of State business outside T&T; air travel, hotel and other expenses for conferences/foreign trade fairs/training seminars; goods/services/works during emergency; one-off provision by non-resident suppliers outside T&T; direct online purchases with no sales contact
+2. Publication of Annual Schedule of Planned Procurement Activities (micro procurement only)
+3. PDAC review
+4. Standstill period
+5. Public notice of award
+6. Challenge proceedings (Part V of Act)
+
+PROCUREMENT REQUIREMENTS THAT REMAIN APPLICABLE:
+1. Adherence to objects of the Act
+2. Include all simplified procurements in annual procurement plan
+3. Four stages of procurement proceedings (planning, solicitation, evaluation/award, contract management)
+4. Quarterly reporting to OPR
+
+NEW PROVISIONS UNDER SIMPLIFIED PROCUREMENT REGULATIONS:
+1. Definition of emergency procurement
+2. Reporting by category of goods/works/services for micro procurement
+3. Reduced tendering timeframes
+4. Public body's own registry of suppliers (micro procurement)
+5. Direct contracting method (micro procurement only)
+6. Verbal quotations (micro procurement only)
+
+REGISTRY FOR MICRO PROCUREMENT: procuring entity establishes and maintains registry; minimum information: name, national ID number, address, contact information, type of business, description of goods/works/services; may be manual or electronic spreadsheet/database; suppliers not on registry may be invited but must be registered no later than 21 days after contract award
+
+PROCUREMENT DEPOSITORY FOR SMALL-SCALE PROCUREMENT: suppliers must register in OPR's Procurement Depository before award of contract; minimum info: name, address, contact number, type of business, nature/line of business, geographical location, legal capacity, copy of ID, ethical code declaration; procuring entity may also request: licences, equipment listings, technical competence
+
+DUE DILIGENCE DOCUMENTARY EVIDENCE (Table 3):
+1. Legal capacity: Certificate of Incorporation & continuance (limited liability); Certificate of Registration (sole traders)
+2. Not insolvent/bankrupt: Declaration (template in solicitation document)
+3. No conviction past 10 years: Declaration (template in solicitation document)
+4. Tax compliance: Tax Clearance Certificate OR letter of exemption; Valid VAT Clearance Certificate OR exemption letter; Valid National Insurance Compliance Certificate OR exemption letter
+5. Professional/technical competence: Portfolio of Projects; Client References; Equipment Listing; Banker's Letter; Management Accounts
+6. Industry standards: Health and Safety Policy Statement (OSH Act); relevant Licences (wireman, plumbing, food handler, etc.)
+
+ONE-TIME TAX WAIVER: procuring entities may grant a one-time waiver to suppliers unable to provide tax compliance evidence at evaluation; supplier awarded contract/purchase order; public body notifies supplier in writing of requirement to provide evidence within 6 months
+
+PETTY CASH POLICY: public body may establish petty cash policy for expenditure up to a de minimis amount; Accounting Officer approves; threshold set by public body's internal policy
+
+CATEGORIES OF GOODS, WORKS AND SERVICES: procuring entities should categorise procurement using UNSPSC (United Nations Standard Products and Services Code) system for reporting
+
+ONLINE PLATFORM PROCUREMENT: goods/services only available via online platform exempt from Depository registration; but procuring entity must document: name of platform, name of supplier, description, price, justification; quarterly report to OPR
+
+COMPLAINTS UNDER SIMPLIFIED PROCUREMENT:
+- Bid rigging or collusion: report to OPR in writing
+- Irregularity in procurement proceeding: report to OPR in writing
+- Breach of Simplified Procurement Regulations: report to OPR in writing
+- Procuring entity must maintain a register of complaints and report to OPR per guidelines
+- No challenge proceedings available (Part V does not apply); but OPR may still investigate
+
+OFFENCES UNDER SIMPLIFIED PROCUREMENT REGULATIONS: splitting procurement = $500,000 + 1 year; non-disclosure breach = $500,000 + 1 year; failure to comply with OPR direction = $100,000
+
+ROLES AND RESPONSIBILITIES:
+- Accounting Officer: overall responsibility for simplified procurement; approves procurement method, award, and reports; may delegate in writing to 'Named' Procurement Officer
+- 'Named' Procurement Officer: named to OPR per s.61(2); responsible for day-to-day conduct of simplified procurement; recommends method and award; prepares records and reports
+
+### General Guidelines: Procurement Methods and Procedures (HGPL08 — Version 2.0, August 2023)
+Provides guidance on procurement methods available under the Act and Regulations for goods, works and services above $1M.
+
+DETERMINING THE MOST APPROPRIATE PROCUREMENT METHOD:
+Consider: (a) organisation's mandates and business needs; (b) characteristics of items to be procured; (c) market situation; (d) degree of urgency; (e) appropriate technology level; (f) capacity of procurement officer; (g) whether procurement is simple/low-value or specialised/complex. Clear justification must be included in record of procurement proceedings.
+
+METHOD CATEGORIES:
+1. Bidding-based methods (open bidding, limited bidding, two-stage bidding, open framework agreements): procuring entity develops technical specifications and retains control of technical solution
+2. RFP-based methods (RFP without negotiation, RFP with dialogue, RFP with consecutive negotiations): procuring entity sets minimum requirements; supplier/contractor develops methodology and solution
+3. Other methods (RFQ, competitive negotiations, single source, sole source): less structured; appropriate for very low-value, urgent or emergency procurements
+
+PROBITY ADVISOR / PROBITY AUDITOR:
+- Probity = risk management approach ensuring procedural integrity; requires process conducted ethically, honestly, impartially and fairly
+- Probity Advisor: active role during process; provides advice on probity issues; engaged as early as possible; NOT to salvage an already-compromised process
+- Probity Auditor: more limited role; observes and reviews process AFTER completion
+- When required: high-value contracts; highly complex, unusual or contentious matters; supply market makes challenges likely
+- Recommended for: Two-stage bidding; RFP with dialogue; RFP with consecutive negotiations; Competitive negotiations
+
+EMERGENCY PROCUREMENT: for exceptional and unforeseeable situations where life/property/equipment/business continuity is immediately at risk OR standards of public health/welfare/safety need re-establishment without delay. Procuring entity shall not use emergency procurement to avoid competitive procurement. Emergency determination must be documented and approved by Accounting Officer; justify in record of procurement proceedings.
+
+URGENT PUBLIC INTEREST: applies to issues negatively affecting rights of T&T citizens (e.g. collapse of a bridge). Can be applied to short-term solution while long-term solution is planned. Standstill period is not required for urgent public interest procurements.
+
+RFP WITH DIALOGUE: used where contract cannot be awarded without interactive discussions; procuring entity invites proposals and engages in dialogue with suppliers to develop solutions; all suppliers treated equally; changes to technical requirements only through formal addenda; Probity Advisor recommended.
+
+RFP WITH CONSECUTIVE NEGOTIATIONS: used where contract terms need to be negotiated with more than one supplier in sequence; start with highest-ranked; if agreement not reached, proceed to next; Probity Advisor recommended.
+
+COMPETITIVE NEGOTIATIONS: for goods/services where technical specifications cannot be established in advance; multiple suppliers negotiate simultaneously; Probity Advisor recommended.
+
+PUBLICATION OF PROCUREMENT NOTICE: open bidding notice must be published in at least one daily newspaper of wide circulation in T&T; procuring entity's website; OPR website (if available); for international: also regional/international newspaper, trade magazine or widely-read websites.
+
+CANCELLATION OF PROCUREMENT: procuring entity may cancel at any time prior to acceptance; publish notice of cancellation in same manner as original notice; unopened tenders returned; reasons for cancellation documented in record.
+
+DUTY TO ACCEPT SUCCESSFUL SUBMISSION: after standstill period (if applicable), procuring entity shall accept successful submission; issue Notice of Acceptance to successful supplier; publish award on website; contract enters force on dispatch of Notice of Acceptance (or signing if written contract required).
+
+### General Guidelines: Standstill Period (HGEA02 — Version 3.0, August 2023)
+Detailed guidance on the implementation of the standstill period in procurement proceedings.
+
+WHAT IS THE STANDSTILL PERIOD: A short pause of no fewer than 10 working days and not more than 15 working days (in the first instance), per OPR guidelines. Begins when Notice of Decision to Award is issued to all participating suppliers/contractors. Procuring entity CANNOT award contract before end of standstill period — doing so may render the contract void and illegal.
+
+PURPOSE: (a) allows aggrieved supplier/contractor to address concerns before contract award; (b) protects public body from having contracts rendered null and void via Challenge Proceedings after award; contributes to: efficiency (mitigates risk of project halts); value for money (reduces risk of delays); fairness and equity; transparency; improved public confidence
+
+WHEN TO USE (mandatory vs discretionary):
+- MANDATORY: for procurements identified as high-risk/high-value (Strategic quadrant) or low-risk/high-value (Leverage quadrant) in Annual Procurement Plan
+- DISCRETIONARY: for high-risk/low-value procurements (Bottleneck quadrant)
+- NOT required (exceptions): first stage of two-stage bidding; technical evaluation stage of two-envelope process; pre-qualification process; urgent public interest; single or sole source; only one supplier submits; low-risk/low-value (Routine quadrant)
+- Application approved by Accounting Officer/Board; published in Annual Schedule of Planned Procurement Activities
+
+NOTICE OF DECISION TO AWARD — must contain:
+(a) Name and address of successful supplier/contractor
+(b) Contract price
+(c) Duration and expiry date of standstill period
+(d) Evaluation criteria and scoring system
+(e) Score achieved for each criterion by successful supplier/contractor AND by the specific bidder receiving the notice
+(f) Reason(s) why the supplier/contractor's bid was unsuccessful
+NOTE: Do NOT disclose other suppliers' confidential/proprietary information (cost breakdowns, trade secrets, manufacturing processes)
+
+CALCULATING STANDSTILL PERIOD: standstill period is dispatched on Day 0; ends on the day specified in the notice; minimum 10, maximum 15 working days; if additional debriefing requested, this may affect timeline but not extend standstill period unless procuring entity decides to issue a 15-day standstill
+
+AFTER STANDSTILL PERIOD: issue Notice of Acceptance to successful supplier; publish contract award on procuring entity's website (s.36); retain all records
+
+ANNUAL SCHEDULE OF PLANNED PROCUREMENT ACTIVITIES template fields: Project Number; Project Name; UNSPSC Code; Level 3 Brief Description; Proposed date for Issue of Bidding Documents; Expected Delivery/Completion Date; Estimated Project Duration (works/services); Procurement Method; Standstill period (if applicable) — No. of days; Contract Type
+
+### Other Guidelines Available from OPR Website
+- Comprehensive Handbook on Procurement, Retention and Disposal (HGGE01 — Version 2.0, 2023): detailed guidance on all aspects of procurement lifecycle
+- General Guidelines: Management and Monitoring of Procurement Contracts (HGCM01 — Version 2.0, 2023)
+- General Guidelines: Pre-Qualification and Pre-Selection (HGTE01 — Version 3.0, 2023)
+- General Guidelines: Record Keeping and Maintenance of Procurement Files
+- Framework of Internal Control for Procurement (HGGE03 — Version 2.0, 2023)
+- Standard Bidding Documents (for goods, works, services)
+- Model Contracts
+- Procedural Forms and Templates (available at Stage 1 — Planning on OPR website): include Procurement Strategy Development Form, Verbal Quotation Form, Complaint Form, Notification of Unsatisfactory Evidence of Payment of Taxes
+- General Guidelines: Preparation of Handbook & Special Guidelines (and Model Handbook/Special Guideline template for public bodies to prepare their own handbooks for OPR approval)
+
+DISCLAIMER (all OPR Guidelines): In the event of any discrepancies between the Act and Regulations and the General Guidelines, the Act and Regulations shall prevail.
+
+---
+
+INSTRUCTIONS FOR ANSWERING:
+- Answer in plain, clear English while maintaining legal accuracy
+- Always cite the specific section, regulation or legal notice
+- For thresholds, deadlines and penalties give exact figures
+- For complex questions, structure your answer with clear headings
+- If a question is outside the scope of these 20 documents, say so clearly
+- You may answer follow-up questions using prior context in the conversation
+- Keep answers concise but complete — do not pad unnecessarily`;
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let history = [];
+
+// ── DOM REFS ─────────────────────────────────────────────────────────────────
+const msgsEl   = document.getElementById('msgs');
+const welcomeEl= document.getElementById('welcome');
+const typingEl = document.getElementById('typing');
+const txtEl    = document.getElementById('txt');
+const sendEl   = document.getElementById('send');
+
+// ── INPUT HANDLERS ───────────────────────────────────────────────────────────
+function prefill(btn){ txtEl.value = btn.textContent; resize(); sendEl.disabled = false; txtEl.focus(); }
+
+function resize(){
+  txtEl.style.height = 'auto';
+  txtEl.style.height = Math.min(txtEl.scrollHeight, 110) + 'px';
+}
+
+txtEl.addEventListener('input', () => { resize(); sendEl.disabled = !txtEl.value.trim(); });
+txtEl.addEventListener('keydown', e => {
+  if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if(!sendEl.disabled) send(); }
+});
+
+// ── MESSAGE RENDERING ────────────────────────────────────────────────────────
+function addBubble(role, html, isError){
+  welcomeEl.style.display = 'none';
+  const row = document.createElement('div');
+  row.className = 'row ' + role;
+  const av = document.createElement('div');
+  av.className = 'av ' + (role === 'user' ? 'user' : 'bot');
+  av.textContent = role === 'user' ? '👤' : '⚖';
+  const bub = document.createElement('div');
+  bub.className = 'bub ' + (role === 'user' ? 'user' : 'bot') + (isError ? ' error-bub' : '');
+  if(role === 'user') bub.textContent = html;
+  else bub.innerHTML = html;
+  row.appendChild(av);
+  row.appendChild(bub);
+  msgsEl.insertBefore(row, typingEl);
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+
+// ── MARKDOWN-LITE FORMATTER ──────────────────────────────────────────────────
+function fmt(text){
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')
+    .replace(/\*(.+?)\*/g, '<i>$1</i>')
+    .replace(/`(.+?)`/g, '<code>$1</code>')
+    .replace(/^### (.+)$/gm, '<b style="color:var(--gold);font-size:13.5px">$1</b>')
+    .replace(/^## (.+)$/gm,  '<b style="color:var(--gold);font-size:14px">$1</b>')
+    .replace(/^# (.+)$/gm,   '<b style="color:var(--gold);font-size:15px">$1</b>')
+    .replace(/\n/g, '<br>');
+}
+
+// ── SEND ─────────────────────────────────────────────────────────────────────
+async function send(){
+  const q = txtEl.value.trim();
+  if(!q) return;
+
+  txtEl.value = ''; resize(); sendEl.disabled = true;
+  addBubble('user', q);
+  history.push({ role: 'user', content: q });
+
+  typingEl.classList.add('show');
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+
+  try {
+    const GEMINI_KEY = 'AIzaSyC0srqmCWwcOT_vUffFCJGhYph-_t7cp0s';
+    const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`;
+
+    // Build Gemini conversation format
+    const geminiMessages = [];
+    for(const m of history){
+      geminiMessages.push({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }]
+      });
+    }
+
+    const res = await fetch(GEMINI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYSTEM }] },
+        contents: geminiMessages,
+        generationConfig: { maxOutputTokens: 1024, temperature: 0.2 }
+      })
+    });
+
+    const data = await res.json();
+
+    if(data.error){
+      throw new Error(data.error.message || 'API error');
+    }
+
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response received.';
+    history.push({ role: 'assistant', content: reply });
+    typingEl.classList.remove('show');
+    addBubble('bot', fmt(reply));
+
+  } catch(err){
+    typingEl.classList.remove('show');
+    const msg = err.message.includes('Failed to fetch')
+      ? 'No internet connection. Please check your connection and try again.'
+      : 'Something went wrong: ' + err.message;
+    addBubble('bot', msg, true);
+    history.pop();
+  }
+
+  msgsEl.scrollTop = msgsEl.scrollHeight;
+}
+</script>
+</body>
+</html>
